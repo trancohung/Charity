@@ -7,9 +7,15 @@ package com.btl.service.impl;
 import com.btl.pojos.Users;
 import com.btl.repository.UsersRepository;
 import com.btl.service.UsersService;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,6 +36,8 @@ public class UsersServiceImpl implements UsersService {
     private UsersRepository usersRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private Cloudinary cloudinary;
     
     @Override
     public List<Users> getUsers(String username) {
@@ -42,7 +50,16 @@ public class UsersServiceImpl implements UsersService {
         users.setPassword(this.passwordEncoder.encode(pass));
         if(users.getUserRole() == null)
             users.setUserRole(Users.USER);
+        
+        try {
+            Map r = this.cloudinary.uploader().upload(users.getFile().getBytes(),
+                    ObjectUtils.asMap("resource_type", "auto"));
+            users.setAvatar((String) r.get("secure_url"));
         return this.usersRepository.addUser(users);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     @Override

@@ -16,8 +16,8 @@
 </div>
 
 <ul>
-    <c:forEach var="prod" items="${users}">
-        <li>${prod.username}</li>
+    <c:forEach var="u" items="${users}">
+        <li>${u.username}</li>
     </c:forEach>
 </ul>
 

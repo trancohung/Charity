@@ -15,7 +15,9 @@
         </li>
         <c:if test="${pageContext.request.userPrincipal.name == null}">
             <li class="nav-item active">
-                <a class="nav-link text-danger" href="<c:url value="/login"/>">Đăng nhập</a>
+                <a class="nav-link text-danger" href="<c:url value="/login"/>">
+                    <i class="fa fa-user"></i>Đăng nhập
+                </a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link text-danger" href="<c:url value="/register"/>">Đăng ký</a>
@@ -23,7 +25,16 @@
         </c:if>
         <c:if test="${pageContext.request.userPrincipal.name != null}">
             <li class="nav-item active">
-                <a class="nav-link text-danger" href="<c:url value="/" />">${pageContext.request.userPrincipal.name}</a>
+                <a class="nav-link text-danger" href="<c:url value="/" />">
+                    <c:if test="${currentUser.avatar != null}" >
+                        <img style="width:30px;" src=""${currentUser.avatar}" class="rounded-circle" />
+                    </c:if>
+                    <c:if test="${currentUser.avatar == null}" >
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </c:if>
+                        
+                    ${pageContext.request.userPrincipal.name}
+                </a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link text-danger" href="<c:url value="/logout" />">Logout</a>

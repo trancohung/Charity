@@ -1,5 +1,4 @@
 com\btl\service\impl\UsersServiceImpl.class
-com\btl\pojos\Image.class
 com\btl\repository\UsersRepository.class
 com\btl\configs\WebApplicationContextConfig.class
 com\btl\service\UsersService.class
@@ -13,7 +12,7 @@ com\btl\controllers\HomeController.class
 com\btl\pojos\Posts.class
 com\btl\pojos\Hashtag.class
 com\btl\configs\DispatcherServletInitializer.class
-com\btl\pojos\Image_.class
+com\btl\controllers\DonationProductController.class
 com\btl\pojos\Report_.class
 com\btl\controllers\UserController.class
 com\btl\pojos\Comments.class

@@ -72,6 +72,18 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
     }
     
     @Bean
+    public Cloudinary cloudinary() {
+        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "dndagsmof",
+            "api_key", "544433158328772",
+            "api_secret","eHgkcMc5-7U2-m3LaktOvanag5k",
+            "secure", true
+        ));
+        
+        return cloudinary;
+    }
+         
+    @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("UTF-8");
@@ -79,14 +91,4 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         return resolver;
     }
     
-//    @Bean
-//    public Cloudinary cloudinary() {
-//        Cloudinary c = new Cloudinary(ObjectUtils.asMap()
-//        
-//        
-//        );
-//        
-//        return c;
-//    }
-            
 }

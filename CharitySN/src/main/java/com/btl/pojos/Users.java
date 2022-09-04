@@ -25,6 +25,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -63,7 +64,8 @@ public class Users implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "password")
     private String password;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @Size(max = 100)
     @Column(name = "avatar")
     private String avatar;
     @Basic(optional = false)
@@ -93,7 +95,8 @@ public class Users implements Serializable {
     private Collection<Posts> postsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private Collection<Auction> auctionCollection;
-
+    @Transient
+    private MultipartFile file;
     public Users() {
     }
 
@@ -246,6 +249,20 @@ public class Users implements Serializable {
      */
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    /**
+     * @return the file
+     */
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
     
 }
