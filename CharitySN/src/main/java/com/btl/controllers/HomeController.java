@@ -6,6 +6,7 @@ package com.btl.controllers;
 
 import com.btl.pojos.Users;
 import com.btl.service.UsersService;
+import javax.servlet.http.HttpSession;
 //import javax.persistence.Query;
 //import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,14 @@ public class HomeController {
     public String index(Model model) {
 //        Session s = sessionFactory.getObject().getCurrentSession();
 //        Query q = s.createQuery("From Donationproduct");
-        model.addAttribute("name", "Chinh");
-        
+        model.addAttribute("name", "Buddy");
         return "index";
     }
     
+    @ModelAttribute
+    public void commonAttrs(Model model, HttpSession session) {
+        model.addAttribute("currentUser", session.getAttribute("currentUser"));
+    }
 //    @RequestMapping(name="/register-post", method = RequestMethod.POST)
 //    public String register(Model model, @ModelAttribute(value = "users") Users users) {
 //        model.addAttribute("fullname", users.getFullname());

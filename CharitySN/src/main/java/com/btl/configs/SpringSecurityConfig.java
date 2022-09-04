@@ -4,6 +4,8 @@
  */
 package com.btl.configs;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -41,6 +43,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
+    }
+    
+     @Bean
+    public Cloudinary cloudinary() {
+        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "dndagsmof",
+            "api_key", "544433158328772",
+            "api_secret","eHgkcMc5-7U2-m3LaktOvanag5k",
+            "secure", true
+        ));
+        
+        return cloudinary;
     }
 
     @Override

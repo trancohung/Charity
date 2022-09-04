@@ -52,6 +52,10 @@ public class Posts implements Serializable {
     @Column(name = "content")
     private String content;
     @Basic(optional = false)
+    @Size(min =1, max = 45)
+    @Column(name = "image")
+    private String image;
+    @Basic(optional = false)
     @NotNull
     @Column(name = "like_count")
     private int likeCount;
@@ -60,8 +64,6 @@ public class Posts implements Serializable {
     @Column(name = "created")
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
-    private Collection<Image> imageCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
     private Collection<Comments> commentsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
@@ -118,15 +120,6 @@ public class Posts implements Serializable {
 
     public void setCreated(Date created) {
         this.created = created;
-    }
-
-    @XmlTransient
-    public Collection<Image> getImageCollection() {
-        return imageCollection;
-    }
-
-    public void setImageCollection(Collection<Image> imageCollection) {
-        this.imageCollection = imageCollection;
     }
 
     @XmlTransient
@@ -196,6 +189,20 @@ public class Posts implements Serializable {
     @Override
     public String toString() {
         return "com.btl.pojos.Posts[ idPosts=" + idPosts + " ]";
+    }
+
+    /**
+     * @return the image
+     */
+    public String getImage() {
+        return image;
+    }
+
+    /**
+     * @param image the image to set
+     */
+    public void setImage(String image) {
+        this.image = image;
     }
     
 }
