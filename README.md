@@ -1,8 +1,9 @@
 # Charity
-tk admin: 
+admin: 
 username: admin
 password: 1
 
-tk user:
+user:
 username: trancohung2001
 password: 1
+
