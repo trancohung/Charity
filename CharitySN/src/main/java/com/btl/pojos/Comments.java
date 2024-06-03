@@ -4,10 +4,14 @@
  */
 package com.btl.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -15,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,14 +35,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Comments.findAll", query = "SELECT c FROM Comments c"),
     @NamedQuery(name = "Comments.findByIdcomments", query = "SELECT c FROM Comments c WHERE c.idcomments = :idcomments"),
     @NamedQuery(name = "Comments.findByImage", query = "SELECT c FROM Comments c WHERE c.image = :image"),
-    @NamedQuery(name = "Comments.findBySticker", query = "SELECT c FROM Comments c WHERE c.sticker = :sticker"),
-    @NamedQuery(name = "Comments.findByReply", query = "SELECT c FROM Comments c WHERE c.reply = :reply")})
+    @NamedQuery(name = "Comments.findBySticker", query = "SELECT c FROM Comments c WHERE c.sticker = :sticker")})
 public class Comments implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "idcomments")
     private Integer idcomments;
     @Basic(optional = false)
@@ -52,18 +56,18 @@ public class Comments implements Serializable {
     @Size(max = 45)
     @Column(name = "sticker")
     private String sticker;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "reply")
-    private String reply;
     @JoinColumn(name = "post_id", referencedColumnName = "idPosts")
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Posts postId;
     @JoinColumn(name = "user_id", referencedColumnName = "idUsers")
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Users userId;
-
+    @Column(name = "created_date")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date createdDate;
+    
     public Comments() {
     }
 
@@ -71,10 +75,9 @@ public class Comments implements Serializable {
         this.idcomments = idcomments;
     }
 
-    public Comments(Integer idcomments, String content, String reply) {
+    public Comments(Integer idcomments, String content) {
         this.idcomments = idcomments;
         this.content = content;
-        this.reply = reply;
     }
 
     public Integer getIdcomments() {
@@ -107,14 +110,6 @@ public class Comments implements Serializable {
 
     public void setSticker(String sticker) {
         this.sticker = sticker;
-    }
-
-    public String getReply() {
-        return reply;
-    }
-
-    public void setReply(String reply) {
-        this.reply = reply;
     }
 
     public Posts getPostId() {
@@ -156,6 +151,20 @@ public class Comments implements Serializable {
     @Override
     public String toString() {
         return "com.btl.pojos.Comments[ idcomments=" + idcomments + " ]";
+    }
+
+    /**
+     * @return the createdDate
+     */
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    /**
+     * @param createdDate the createdDate to set
+     */
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
     
 }

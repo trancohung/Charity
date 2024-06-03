@@ -11,6 +11,9 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,10 +23,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -32,18 +38,20 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "posts")
 @XmlRootElement
+@CascadeOnDelete
 @NamedQueries({
     @NamedQuery(name = "Posts.findAll", query = "SELECT p FROM Posts p"),
     @NamedQuery(name = "Posts.findByIdPosts", query = "SELECT p FROM Posts p WHERE p.idPosts = :idPosts"),
     @NamedQuery(name = "Posts.findByContent", query = "SELECT p FROM Posts p WHERE p.content = :content"),
     @NamedQuery(name = "Posts.findByLikeCount", query = "SELECT p FROM Posts p WHERE p.likeCount = :likeCount"),
-    @NamedQuery(name = "Posts.findByCreated", query = "SELECT p FROM Posts p WHERE p.created = :created")})
+    @NamedQuery(name = "Posts.findByCreated", query = "SELECT p FROM Posts p WHERE p.created = :created"),
+    @NamedQuery(name = "Posts.findByImage", query = "SELECT p FROM Posts p WHERE p.image = :image")})
 public class Posts implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "idPosts")
     private Integer idPosts;
     @Basic(optional = false)
@@ -51,23 +59,21 @@ public class Posts implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "content")
     private String content;
-    @Basic(optional = false)
-    @Size(min =1, max = 45)
-    @Column(name = "image")
-    private String image;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "like_count")
-    private int likeCount;
+    private Integer likeCount;
     @Basic(optional = false)
     @NotNull
     @Column(name = "created")
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
+    @Size(max = 1000)
+    @Column(name = "image")
+    private String image;
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "postId", orphanRemoval = true, fetch=FetchType.EAGER)
     private Collection<Comments> commentsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
-    private Collection<Donationproduct> donationproductCollection;
+    @JoinColumn(name = "donationproduct_id", referencedColumnName = "iddonationProduct")
+    @ManyToOne
+    private Donationproduct donationproductId;
     @JoinColumn(name = "user_id", referencedColumnName = "idUsers")
     @ManyToOne(optional = false)
     private Users userId;
@@ -75,7 +81,8 @@ public class Posts implements Serializable {
     private Collection<Hashtag> hashtagCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "postId")
     private Collection<Likes> likesCollection;
-
+    @Transient
+    private MultipartFile file;
     public Posts() {
     }
 
@@ -83,10 +90,9 @@ public class Posts implements Serializable {
         this.idPosts = idPosts;
     }
 
-    public Posts(Integer idPosts, String content, int likeCount, Date created) {
+    public Posts(Integer idPosts, String content, Date created) {
         this.idPosts = idPosts;
         this.content = content;
-        this.likeCount = likeCount;
         this.created = created;
     }
 
@@ -106,11 +112,11 @@ public class Posts implements Serializable {
         this.content = content;
     }
 
-    public int getLikeCount() {
+    public Integer getLikeCount() {
         return likeCount;
     }
 
-    public void setLikeCount(int likeCount) {
+    public void setLikeCount(Integer likeCount) {
         this.likeCount = likeCount;
     }
 
@@ -122,6 +128,14 @@ public class Posts implements Serializable {
         this.created = created;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @XmlTransient
     public Collection<Comments> getCommentsCollection() {
         return commentsCollection;
@@ -131,13 +145,12 @@ public class Posts implements Serializable {
         this.commentsCollection = commentsCollection;
     }
 
-    @XmlTransient
-    public Collection<Donationproduct> getDonationproductCollection() {
-        return donationproductCollection;
+    public Donationproduct getDonationproductId() {
+        return donationproductId;
     }
 
-    public void setDonationproductCollection(Collection<Donationproduct> donationproductCollection) {
-        this.donationproductCollection = donationproductCollection;
+    public void setDonationproductId(Donationproduct donationproductId) {
+        this.donationproductId = donationproductId;
     }
 
     public Users getUserId() {
@@ -192,17 +205,17 @@ public class Posts implements Serializable {
     }
 
     /**
-     * @return the image
+     * @return the file
      */
-    public String getImage() {
-        return image;
+    public MultipartFile getFile() {
+        return file;
     }
 
     /**
-     * @param image the image to set
+     * @param file the file to set
      */
-    public void setImage(String image) {
-        this.image = image;
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
     
 }

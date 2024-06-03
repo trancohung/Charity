@@ -1,4 +1,4 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -49,7 +49,7 @@ public class UsersServiceImpl implements UsersService {
         String pass = users.getPassword();
         users.setPassword(this.passwordEncoder.encode(pass));
         if(users.getUserRole() == null)
-            users.setUserRole(Users.USER);
+            users.setUserRole(Users.getUSER());
         
         try {
             Map r = this.cloudinary.uploader().upload(users.getFile().getBytes(),
@@ -73,6 +73,11 @@ public class UsersServiceImpl implements UsersService {
         
         return new org.springframework.security.core
                 .userdetails.User(user.getUsername(), user.getPassword(), auth);
+    }
+
+    @Override
+    public Users getUsersById(int userId) {
+        return this.usersRepository.getUsersById(userId);
     }
     
 }

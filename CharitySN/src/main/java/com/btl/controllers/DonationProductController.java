@@ -5,18 +5,22 @@
 package com.btl.controllers;
 
 import com.btl.pojos.Donationproduct;
+import com.btl.service.DonationProductService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -25,24 +29,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class DonationProductController {
     @Autowired
-    private Cloudinary cloudinary;
+    private DonationProductService donationProductService;
     
-    @GetMapping("/admin/donationproducts")
-    public String list(Model model) {
-        model.addAttribute("donationproduct", new Donationproduct());
-        return "donationproduct";
+    @GetMapping("/addproduct")
+    public String addproduct(Model model) {
+        model.addAttribute("addproduct", new Donationproduct());
+        return "addproduct";
     }
     
-    @PostMapping("/admin/donationproducts")
-    public String add(@ModelAttribute(value ="donationproduct") Donationproduct donationproduct) {
-        try {
-            Map r = this.cloudinary.uploader().upload(donationproduct.getFile().getBytes(),
-                    ObjectUtils.asMap("resource_type", "auto"));
-            String img = (String) r.get("secure_url");
-            return "redirect:/";
-        } catch (IOException ex) {
-            System.err.println("== ADD PRODUCT ==" + ex.getMessage());
-        }
+    @PostMapping("/addproduct")
+    public String add(Model model, @ModelAttribute(value ="addproduct") Donationproduct donationproduct, HttpSession session) {
+        if (this.donationProductService.addOrUpdate(donationproduct) == true)
+            return "redirect:/donationproduct";
+        else 
+           model.addAttribute("errMsg", "Something wrong!!!");
+        return "addproduct";
+    }
+    
+    @RequestMapping("/donationproduct")
+    public String donationproduct(Model model, @RequestParam(required = false) Map<String, String> params){
+        int page = Integer.parseInt(params.getOrDefault("page", "1"));
+        String kw = params.getOrDefault("kw", null);
+        model.addAttribute("donationproducts", this.donationProductService.getDonationProducts(kw, page));
+        model.addAttribute("counter", this.donationProductService.countDonationproduct());
+        
+//        model.addAttribute("counter", this.Service.countPost());
         
         return "donationproduct";
     }

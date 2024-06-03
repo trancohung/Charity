@@ -24,9 +24,36 @@ Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this 
         <put-attribute name="title" value="Đăng ký"/>
         <put-attribute name="content" value="/WEB-INF/jsp/register.jsp"/>
     </definition>
+    <definition name="addproduct" extends="baseLayout">
+        <put-attribute name="title" value="Thêm sản phẩm"/>
+        <put-attribute name="content" value="/WEB-INF/jsp/addproduct.jsp"/>
+    </definition>
+    <definition name="addpost" extends="baseLayout">
+        <put-attribute name="title" value="Thêm bài viết"/>
+        <put-attribute name="content" value="/WEB-INF/jsp/addpost.jsp"/>
+    </definition>
+    <definition name="posts" extends="baseLayout">
+        <put-attribute name="title" value="Bài viết"/>
+        <put-attribute name="content" value="/WEB-INF/jsp/posts.jsp"/>
+    </definition>
     <definition name="donationproduct" extends="baseLayout">
-        <put-attribute name="title" value="Quản lý sản phẩm"/>
+        <put-attribute name="title" value="Sản phẩm"/>
         <put-attribute name="content" value="/WEB-INF/jsp/donationproduct.jsp"/>
+    </definition>
+    <definition name="posts-detail" extends="baseLayout">
+        <put-attribute name="title" value="Chi tiết sản phẩm"/>
+        <put-attribute name="content" value="/WEB-INF/jsp/posts-detail.jsp"/>
+    </definition>
+    
+    <definition name="baseAdminLayout" template="/WEB-INF/layout/base-admin.jsp">
+        <put-attribute name="title" value="Quản trị hệ thống"/>
+        <put-attribute name="left" value="/WEB-INF/layout/admin-left.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/layout/admin-footer.jsp"/>
+        <put-attribute name="content" value="..."/>
+    </definition>
+    <definition name="posts-stats" extends="baseAdminLayout">
+        <put-attribute name="title" value="Thống kê bài viết theo người dùng"/>
+        <put-attribute name="content" value="/WEB-INF/jsp/posts-stats.jsp"/>
     </definition>
 </tiles-definitions>
         
