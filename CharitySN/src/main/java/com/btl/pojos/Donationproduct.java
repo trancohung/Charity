@@ -5,8 +5,8 @@
 package com.btl.pojos;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,16 +14,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -35,9 +37,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Donationproduct.findAll", query = "SELECT d FROM Donationproduct d"),
     @NamedQuery(name = "Donationproduct.findByIddonationProduct", query = "SELECT d FROM Donationproduct d WHERE d.iddonationProduct = :iddonationProduct"),
-    @NamedQuery(name = "Donationproduct.findByStatus", query = "SELECT d FROM Donationproduct d WHERE d.status = :status"),
     @NamedQuery(name = "Donationproduct.findByName", query = "SELECT d FROM Donationproduct d WHERE d.name = :name"),
-    @NamedQuery(name = "Donationproduct.findByPrice", query = "SELECT d FROM Donationproduct d WHERE d.price = :price")})
+    @NamedQuery(name = "Donationproduct.findByPrice", query = "SELECT d FROM Donationproduct d WHERE d.price = :price"),
+    @NamedQuery(name = "Donationproduct.findByImage", query = "SELECT d FROM Donationproduct d WHERE d.image = :image")})
 public class Donationproduct implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,26 +50,27 @@ public class Donationproduct implements Serializable {
     private Integer iddonationProduct;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "status")
-    private short status;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 255)
     @Column(name = "name")
     private String name;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "price")
-    private BigDecimal price;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "donationProductid")
-    private Collection<Image> imageCollection;
-    @JoinColumn(name = "post_id", referencedColumnName = "idPosts")
-    @ManyToOne(optional = false)
-    private Posts postId;
+    private long price;
+    @Size(max = 1000)
+    @Column(name = "image")
+    private String image;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "created")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+    @OneToMany(mappedBy = "donationproductId")
+    private Collection<Posts> postsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "donationProductid")
     private Collection<Auction> auctionCollection;
-
+    @Transient
+    private MultipartFile file;
     public Donationproduct() {
     }
 
@@ -75,11 +78,11 @@ public class Donationproduct implements Serializable {
         this.iddonationProduct = iddonationProduct;
     }
 
-    public Donationproduct(Integer iddonationProduct, short status, String name, BigDecimal price) {
+    public Donationproduct(Integer iddonationProduct, String name, long price, Date created) {
         this.iddonationProduct = iddonationProduct;
-        this.status = status;
         this.name = name;
         this.price = price;
+        this.created = created;
     }
 
     public Integer getIddonationProduct() {
@@ -90,14 +93,6 @@ public class Donationproduct implements Serializable {
         this.iddonationProduct = iddonationProduct;
     }
 
-    public short getStatus() {
-        return status;
-    }
-
-    public void setStatus(short status) {
-        this.status = status;
-    }
-
     public String getName() {
         return name;
     }
@@ -106,29 +101,29 @@ public class Donationproduct implements Serializable {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @XmlTransient
-    public Collection<Image> getImageCollection() {
-        return imageCollection;
+    public Collection<Posts> getPostsCollection() {
+        return postsCollection;
     }
 
-    public void setImageCollection(Collection<Image> imageCollection) {
-        this.imageCollection = imageCollection;
-    }
-
-    public Posts getPostId() {
-        return postId;
-    }
-
-    public void setPostId(Posts postId) {
-        this.postId = postId;
+    public void setPostsCollection(Collection<Posts> postsCollection) {
+        this.postsCollection = postsCollection;
     }
 
     @XmlTransient
@@ -163,6 +158,34 @@ public class Donationproduct implements Serializable {
     @Override
     public String toString() {
         return "com.btl.pojos.Donationproduct[ iddonationProduct=" + iddonationProduct + " ]";
+    }
+
+    /**
+     * @return the file
+     */
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
+
+    /**
+     * @return the created
+     */
+    public Date getCreated() {
+        return created;
+    }
+
+    /**
+     * @param created the created to set
+     */
+    public void setCreated(Date created) {
+        this.created = created;
     }
     
 }

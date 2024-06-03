@@ -7,5 +7,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <div class="alert alert-success">
-    <strong>Cơ Hùng & Chính Hoàng</strong> &copy; 2022.
+    <strong>Cơ Hùng</strong> &copy; 2022.
 </div>
