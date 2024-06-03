@@ -6,14 +6,16 @@ package com.btl.repository;
 
 import com.btl.pojos.Users;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author ACER
  */
+@Component
 public interface UsersRepository {
     boolean addUser(Users users);
     List<Users> getUsers(String username);
-    
+    Users getUsersById(int userId);
     
 }

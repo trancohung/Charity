@@ -6,9 +6,11 @@ package com.btl.configs;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -51,13 +53,21 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 //    public Validator getValidator() {
 //        return validator();
 //    }
-    
+//    
 //    @Bean
 //    public LocalValidatorFactoryBean validator() {
 //        LocalValidatorFactoryBean v = new LocalValidatorFactoryBean();
-//        v.setValidationMessageSource(messageSource);
+//        v.setValidationMessageSource(messageSource());
 //        
 //        return v;
+//    }
+//    
+//    @Bean
+//    public MessageSource messageSource() {
+//        ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+//        source.setBasename("messages");
+//        
+//        return source;
 //    }
     
     @Bean
@@ -72,6 +82,18 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
     }
     
     @Bean
+    public Cloudinary cloudinary() {
+        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "dndagsmof",
+            "api_key", "544433158328772",
+            "api_secret","eHgkcMc5-7U2-m3LaktOvanag5k",
+            "secure", true
+        ));
+        
+        return cloudinary;
+    }
+         
+    @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("UTF-8");
@@ -79,14 +101,4 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         return resolver;
     }
     
-//    @Bean
-//    public Cloudinary cloudinary() {
-//        Cloudinary c = new Cloudinary(ObjectUtils.asMap()
-//        
-//        
-//        );
-//        
-//        return c;
-//    }
-            
 }

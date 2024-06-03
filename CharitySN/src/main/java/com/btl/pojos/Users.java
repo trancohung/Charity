@@ -25,6 +25,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -44,10 +45,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Users.findByUserRole", query = "SELECT u FROM Users u WHERE u.userRole = :userRole"),
     @NamedQuery(name = "Users.findByCreated", query = "SELECT u FROM Users u WHERE u.created = :created")})
 public class Users implements Serializable {
-    public static final String ADMIN = "role_admin";
-    public static final String USER = "role_user";
+    private static final String ADMIN = "ROLE_ADMIN";
+    private static final String USER = "ROLE_USER";
     private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -63,7 +63,7 @@ public class Users implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "password")
     private String password;
-    @Size(max = 45)
+    @Size(max = 100)
     @Column(name = "avatar")
     private String avatar;
     @Basic(optional = false)
@@ -93,7 +93,10 @@ public class Users implements Serializable {
     private Collection<Posts> postsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private Collection<Auction> auctionCollection;
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<Likes> likesCollection;
+    @Transient
+    private MultipartFile file;
     public Users() {
     }
 
@@ -209,6 +212,15 @@ public class Users implements Serializable {
         this.auctionCollection = auctionCollection;
     }
 
+    @XmlTransient
+    public Collection<Likes> getLikesCollection() {
+        return likesCollection;
+    }
+
+    public void setLikesCollection(Collection<Likes> likesCollection) {
+        this.likesCollection = likesCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -235,6 +247,20 @@ public class Users implements Serializable {
     }
 
     /**
+     * @return the ADMIN
+     */
+    public static String getADMIN() {
+        return ADMIN;
+    }
+
+    /**
+     * @return the USER
+     */
+    public static String getUSER() {
+        return USER;
+    }
+
+    /**
      * @return the confirmPassword
      */
     public String getConfirmPassword() {
@@ -246,6 +272,20 @@ public class Users implements Serializable {
      */
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    /**
+     * @return the file
+     */
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
     
 }

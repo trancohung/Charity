@@ -38,6 +38,9 @@ public class Likes implements Serializable {
     @JoinColumn(name = "post_id", referencedColumnName = "idPosts")
     @ManyToOne(optional = false)
     private Posts postId;
+    @JoinColumn(name = "user_id", referencedColumnName = "idUsers")
+    @ManyToOne(optional = false)
+    private Users userId;
 
     public Likes() {
     }
@@ -60,6 +63,14 @@ public class Likes implements Serializable {
 
     public void setPostId(Posts postId) {
         this.postId = postId;
+    }
+
+    public Users getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Users userId) {
+        this.userId = userId;
     }
 
     @Override
