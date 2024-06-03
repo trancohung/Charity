@@ -11,30 +11,39 @@ body {
     background-color: lightblue;
     
 }
-.footer
-{
-position: absolute;
-width: 100%;
-}
-html, body
-{
-height: 100%;
+.footer{
+    position: absolute;
+    width: 100%;
 }
 
-.container
-{
-postition: relative;
-min-height: 100%;
+.alert.alert-success{
+    margin: 0;
 }
-.header
-{
-height: 100px;
-}
-.content
-{
-padding-bottom: 300px;
+html, body{
+    height: 100%;
 }
 
+.container{
+    postition: relative;
+    min-height: 84%;
+}
+.header{
+    height: 55px;
+}
+.content{
+    padding-bottom: 300px;
+}
+
+.row .col-md-2{
+    text-align: center;
+}
+
+canvas{
+    margin-left: 200px;
+}
+
+/*
 img{
     width: 20%;
-}
+}*/
+

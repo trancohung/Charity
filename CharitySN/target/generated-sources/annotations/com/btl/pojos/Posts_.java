@@ -11,13 +11,13 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.7.9.v20210604-rNA", date="2022-09-04T15:55:10")
+@Generated(value="EclipseLink-2.7.9.v20210604-rNA", date="2022-11-04T13:41:53")
 @StaticMetamodel(Posts.class)
 public class Posts_ { 
 
     public static volatile SingularAttribute<Posts, String> image;
     public static volatile CollectionAttribute<Posts, Hashtag> hashtagCollection;
-    public static volatile CollectionAttribute<Posts, Donationproduct> donationproductCollection;
+    public static volatile SingularAttribute<Posts, Donationproduct> donationproductId;
     public static volatile SingularAttribute<Posts, Integer> idPosts;
     public static volatile SingularAttribute<Posts, Date> created;
     public static volatile SingularAttribute<Posts, Integer> likeCount;

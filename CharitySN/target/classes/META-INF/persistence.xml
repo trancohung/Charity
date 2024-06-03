@@ -11,6 +11,7 @@
     <class>com.btl.pojos.Hashtag</class>
     <class>com.btl.pojos.Auction</class>
     <class>com.btl.pojos.Donationproduct</class>
+    <class>com.btl.pojos.Users_1</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/charitysn?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

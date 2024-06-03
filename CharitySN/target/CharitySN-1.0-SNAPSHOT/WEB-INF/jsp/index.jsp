@@ -9,15 +9,8 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
-<h1>Welcome to our website!</h1>
-<h1>Hello ${name}</h1>
-<div>
-    <img src="<c:url value="/images/luan.jpg"/> "alt="test"/>
-</div>
-
-<ul>
-    <c:forEach var="u" items="${users}">
-        <li>${u.username}</li>
-    </c:forEach>
-</ul>
-
+<h1 class="text-center text-danger">Welcome to our website!</h1>
+<!--<h1 class="text-center text-danger">Hello ${name}</h1>-->
+<!--<div class="text-center">
+  
+</div>-->
